@@ -1,14 +1,10 @@
 """Module for vector environments."""
 from typing import Iterable, List, Optional, Union
-
 import gym
 from gym.vector.async_vector_env import AsyncVectorEnv
 from gym.vector.sync_vector_env import SyncVectorEnv
 from gym.vector.vector_env import VectorEnv, VectorEnvWrapper
-
 __all__ = ["AsyncVectorEnv", "SyncVectorEnv", "VectorEnv", "VectorEnvWrapper", "make"]
-
-
 def make(
     id: str,
     num_envs: int = 1,
@@ -41,12 +37,10 @@ def make(
     Returns:
         The vectorized environment.
     """
-
     def create_env(env_num: int):
         """Creates an environment that can enable or disable the environment checker."""
         # If the env_num > 0 then disable the environment checker otherwise use the parameter
         _disable_env_checker = True if env_num > 0 else disable_env_checker
-
         def _make_env():
             env = gym.envs.registration.make(
                 id,
@@ -64,9 +58,7 @@ def make(
                 else:
                     raise NotImplementedError
             return env
-
         return _make_env
-
     env_fns = [
         create_env(disable_env_checker or env_num > 0) for env_num in range(num_envs)
     ]
